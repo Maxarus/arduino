@@ -15,7 +15,7 @@ SoftwareSerial mySerial(2, 3); // RX, TX
 byte note = 0; //The MIDI note value to be played
 byte resetMIDI = 4; //Tied to VS1053 Reset line
 byte ledPin = 13; //MIDI traffic inidicator
-int  instrument = 40; //initiates the instrument
+int  instrument = 27; //initiates the instrument
 
 
 //********SETUP*********
@@ -62,7 +62,7 @@ void loop(){
         //play midi note binValue + 30
         note = 5*binValue + 27;
         noteOn(0, note, 40);
-        talkMIDI(0xC0, 40, 0);  // sets instrument #
+    //  talkMIDI(0xC0, 40, 0);  // sets instrument #
         
         for(int i = 0; i < binValue; i++){
            digitalWrite(LEDinArray[i], HIGH);

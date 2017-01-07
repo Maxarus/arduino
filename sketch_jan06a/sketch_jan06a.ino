@@ -1,11 +1,10 @@
-
 //INIT VARIABLES
 //LED
 int sensorPin = 0; //analog pin 0
 int LEDinArray [8] = {7,2,6,5,9,10,12,14}; //digital LED Pin Array  
 int ledArraySize = 8; //len(LEDinArray);
-int baseValue = 90; //start value
-int stepValue = 75; //block size
+int baseValue = 95; //start value
+int stepValue = 72; //block size
 
 //MIDI
 #include <SoftwareSerial.h>
@@ -15,13 +14,14 @@ SoftwareSerial mySerial(2, 3); // RX, TX
 byte note = 0; //The MIDI note value to be played
 byte resetMIDI = 4; //Tied to VS1053 Reset line
 byte ledPin = 13; //MIDI traffic inidicator
-int  instrument = 40; //initiates the instrument
+int  instrument = 27;
 
 
 //********SETUP*********
 void setup(){
  //LED
  Serial.begin(9600);
+ 
    for(int i = 0; i < ledArraySize; i++){
      pinMode(LEDinArray[i],OUTPUT);
    } 
@@ -31,8 +31,7 @@ void setup(){
  //Serial.begin(57600);
   // Setup soft serial for MIDI control
   mySerial.begin(31250);
-  //set instrument
-  talkMIDI(0xC0, instrument, 0);
+  
   // Reset the VS1053 chip
   pinMode(resetMIDI, OUTPUT);
   digitalWrite(resetMIDI, LOW);
@@ -47,7 +46,6 @@ void loop(){
   Serial.println(val);
   rangeFinder(val);
   
-  
   //just to slow down the output - remove if trying to catch an object passing by
   delay(100);
   }
@@ -61,8 +59,8 @@ void loop(){
         binValue = (irVal-baseValue)/stepValue+1;
         //play midi note binValue + 30
         note = 5*binValue + 27;
-        noteOn(0, note, 40);
-        talkMIDI(0xC0, 40, 0);  // sets instrument #
+        noteOn(0, note, 20);
+        talkMIDI(0xC0, 27, 0);
         
         for(int i = 0; i < binValue; i++){
            digitalWrite(LEDinArray[i], HIGH);
@@ -94,8 +92,6 @@ void loop(){
     }
  }
 
-
-
  //MIDI
  //Send a MIDI note-on message.  Like pressing a piano key
 //channel ranges from 0-15
@@ -121,4 +117,5 @@ void talkMIDI(byte cmd, byte data1, byte data2) {
 
   digitalWrite(ledPin, LOW);
 }
+
 
