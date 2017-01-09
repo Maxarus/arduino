@@ -57,6 +57,7 @@ void loop(){
   void rangeFinder(int irVal) {
     int binValue = 0;
     for (int i=0; i < ledArraySize; i++) {
+      
       if (irVal >= baseValue){
         binValue = (irVal-baseValue)/stepValue+1;
         //play midi note binValue + 30
